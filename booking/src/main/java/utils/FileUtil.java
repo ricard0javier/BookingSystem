@@ -1,5 +1,7 @@
 package utils;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
@@ -34,5 +36,30 @@ public class FileUtil {
 			}
 
 		}
+	}
+	
+	/**
+	 * Read a file and return a string with its data
+	 * @param filePath
+	 * @return
+	 * @throws IOException
+	 */
+	public static String readFile(String filePath) throws IOException {
+		BufferedReader br = new BufferedReader(new FileReader(filePath));
+		 String everything = null;
+	    try {
+	        StringBuilder sb = new StringBuilder();
+	        String line = br.readLine();
+
+	        while (line != null) {
+	            sb.append(line);
+	            sb.append("\r\n");
+	            line = br.readLine();
+	        }
+	        everything = sb.toString();
+	    } finally {
+	        br.close();
+	    }
+	    return everything;
 	}
 }

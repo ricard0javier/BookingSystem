@@ -1,0 +1,84 @@
+package vo;
+
+import java.util.Date;
+
+
+public class MeetingRequestVO {
+	
+	/**
+	 * Moment in which the submission was requested
+	 */
+	private Date requestTime;
+	
+	/**
+	 * Identity of the employee who made the request
+	 */
+	private String employeeId; 
+	
+	/**
+	 * Meeting start time
+	 */
+	private Date startTime;
+	
+	/**
+	 * Meeting duration in hours
+	 */
+	private int duration;
+
+	/**
+	 * @return the requestTime
+	 */
+	public Date getRequestTime() {
+		return requestTime;
+	}
+
+	/**
+	 * @param requestTime the requestTime to set
+	 */
+	public void setRequestTime(Date requestTime) {
+		this.requestTime = requestTime;
+	}
+
+	/**
+	 * @return the employeeId
+	 */
+	public String getEmployeeId() {
+		return employeeId;
+	}
+
+	/**
+	 * @param employeeId the employeeId to set
+	 */
+	public void setEmployeeId(String employeeId) {
+		this.employeeId = employeeId;
+	}
+
+	/**
+	 * @return the startTime
+	 */
+	public Date getStartTime() {
+		return startTime;
+	}
+
+	/**
+	 * @param startTime the startTime to set
+	 */
+	public void setStartTime(Date startTime) {
+		this.startTime = startTime;
+	}
+
+	/**
+	 * @return the duration
+	 */
+	public int getDuration() {
+		return duration;
+	}
+
+	/**
+	 * @param duration the duration to set
+	 */
+	public void setDuration(int duration) {
+		this.duration = duration;
+	}
+
+}
