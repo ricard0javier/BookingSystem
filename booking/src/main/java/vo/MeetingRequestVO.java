@@ -21,6 +21,11 @@ public class MeetingRequestVO {
 	private Date startTime;
 	
 	/**
+	 * Meeting start time
+	 */
+	private Date endTime;
+	
+	/**
 	 * Meeting duration in hours
 	 */
 	private int duration;
@@ -59,12 +64,25 @@ public class MeetingRequestVO {
 	public Date getStartTime() {
 		return startTime;
 	}
+	/**
+	 * @return the endTime
+	 */
+	public Date getEndTime() {
+		return endTime;
+	}
 
 	/**
 	 * @param startTime the startTime to set
 	 */
 	public void setStartTime(Date startTime) {
 		this.startTime = startTime;
+	}
+	
+	/**
+	 * @param startTime the endTime to set
+	 */
+	public void setEndTime(Date endTime) {
+		this.endTime = endTime;
 	}
 
 	/**

@@ -1,6 +1,6 @@
 package model;
 
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 
 import java.util.List;
 
@@ -11,7 +11,7 @@ import vo.MeetingRequestVO;
 import vo.SubmissionVO;
 
 public class BatchProcessorTest {
-	
+
 	private static String OPENING_HOURS = "0900 1730";
 	private static String INPUT = ""
 			+ OPENING_HOURS
@@ -24,14 +24,16 @@ public class BatchProcessorTest {
 			+ "\n2011-03-17 10:17:06 EMP004"
 			+ "\n2011-03-22 16:00 1"
 			+ "\n2011-03-15 17:29:12 EMP005"
-			+ "\n2011-03-21 16:00 32";
+			+ "\n2011-03-21 16:00 3";
 	
-	private BatchProcessor batchProcessor = new BatchProcessor();
-
+	private BatchProcessor batchProcessor = new BatchProcessor();	
+	
 	@Test
 	public void testProcess() {
-		fail("Not yet implemented");
+		BatchProcessor batchProcessor = new BatchProcessor();
+		batchProcessor.process(INPUT);
 	}
+	
 
 	@Test
 	public void testProcessWorkingHours() {
@@ -51,5 +53,7 @@ public class BatchProcessorTest {
 	public void testProcessOutput() {
 		fail("Not yet implemented");
 	}
+
+
 
 }

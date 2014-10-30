@@ -1,5 +1,6 @@
 package vo;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -12,12 +13,12 @@ public class SubmissionVO {
 	/**
 	 * Hour in which the company open, expressed in 24 hour format
 	 */
-	private int openingHour;
+	private Date openingHour;
 	
 	/**
 	 * Hour in which the company closes, expressed in 24 hour format
 	 */
-	private int closingHour;
+	private Date closingHour;
 	
 	/**
 	 * List of meeting request made
@@ -27,28 +28,28 @@ public class SubmissionVO {
 	/**
 	 * @return the openingHour
 	 */
-	public int getOpeningHour() {
+	public Date getOpeningHour() {
 		return openingHour;
 	}
 
 	/**
 	 * @param openingHour the openingHour to set
 	 */
-	public void setOpeningHour(int openingHour) {
+	public void setOpeningHour(Date openingHour) {
 		this.openingHour = openingHour;
 	}
 
 	/**
 	 * @return the closingHour
 	 */
-	public int getClosingHour() {
+	public Date getClosingHour() {
 		return closingHour;
 	}
 
 	/**
 	 * @param closingHour the closingHour to set
 	 */
-	public void setClosingHour(int closingHour) {
+	public void setClosingHour(Date closingHour) {
 		this.closingHour = closingHour;
 	}
 
