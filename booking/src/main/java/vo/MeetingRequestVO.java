@@ -3,7 +3,7 @@ package vo;
 import java.util.Date;
 
 
-public class MeetingRequestVO {
+public class MeetingRequestVO implements Comparable<MeetingRequestVO>{
 	
 	/**
 	 * Moment in which the submission was requested
@@ -98,5 +98,11 @@ public class MeetingRequestVO {
 	public void setDuration(int duration) {
 		this.duration = duration;
 	}
+
+	public int compareTo(MeetingRequestVO o) {
+		return this.startTime.compareTo(o.getStartTime());
+	}
+	
+	
 
 }

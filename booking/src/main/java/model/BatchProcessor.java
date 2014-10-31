@@ -4,7 +4,9 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashMap;
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -27,9 +29,9 @@ public class BatchProcessor {
 	 * @return
 	 * @throws ParseException 
 	 */
-	public String process(String input) throws ParseException {
+	public String processMeetingRequests(String input) throws ParseException {
 		String result = "";
-		if (input != null || !input.isEmpty()) {
+		if (input != null && !input.isEmpty()) {
 			String[] lines = input.split("\\n|\\r\\n");
 			if (lines.length % 2 == 1) {
 				SubmissionVO submissionVO = processWorkingHours(lines[0]);
@@ -45,7 +47,7 @@ public class BatchProcessor {
 				
 			}
 		}
-		return result;
+		return result.replaceFirst("\n", "");
 	}
 	
 	/**
@@ -84,25 +86,80 @@ public class BatchProcessor {
 					meetingRequestVO.setDuration(Integer.valueOf(input[i+1].substring(17)));
 
 					if (result == null) {
-						result = new ArrayList<MeetingRequestVO>();
+						result = new LinkedList<MeetingRequestVO>();
 					}
-					
-					if (!isInWorkingHours(meetingRequestVO, workingHours)
-							&& !isOverriden(meetingRequestVO, result)) {
+					if (isInWorkingHours(meetingRequestVO, workingHours)) {
 						result.add(meetingRequestVO);
 					}
 				} catch (ParseException e) {
 					e.printStackTrace();
 				}
 			}
+			// ordering by Request time
+			Collections.sort(result, new MeetingRequestComparator());
+			
+			// avoid overlap
+			for (MeetingRequestVO meetingRequestVO : result) {
+				if (isOverriden(meetingRequestVO, result)) {
+					result.remove(meetingRequestVO);
+				}
+			}
+			Collections.sort(result);
 		}		
 		return result;
 	}
 	
-	private boolean !isInWorkingHours(MeetingRequestVO meetingRequestVO,
+	/**
+	 * Avoid overlap
+	 * @param evaluated
+	 * @param allMeetings
+	 * @return
+	 */
+	private boolean isOverriden(MeetingRequestVO evaluated,
+			List<MeetingRequestVO> allMeetings) {
+		for (MeetingRequestVO previousMeeting : allMeetings) {
+			if (evaluated.equals(previousMeeting)) {
+				break;
+			}
+			DateTime endPreviousMeeting = new DateTime(previousMeeting.getStartTime()).plusHours(previousMeeting.getDuration());
+			DateTime endEvaluatedMeeting = new DateTime(evaluated.getStartTime()).plusHours(evaluated.getDuration());
+			if(!endEvaluatedMeeting.isBefore(previousMeeting.getStartTime().getTime())
+					&& !endPreviousMeeting.isBefore(evaluated.getStartTime().getTime()))  {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * Check that the meeting is between the working hours
+	 * @param meetingRequestVO
+	 * @param workingHours
+	 * @return
+	 */
+	private boolean isInWorkingHours(MeetingRequestVO meetingRequestVO,
 			SubmissionVO workingHours) {
-		DateTime open = new DateTime(MeetingRequestVO.);
-		DateTime close = new DateTime(workingHours.getOpeningHour());
+		DateTime start = new DateTime(meetingRequestVO.getStartTime());
+		DateTime end = start.plusHours(meetingRequestVO.getDuration());
+		DateTime openDt = new DateTime(workingHours.getOpeningHour());
+		DateTime closeDt = new DateTime(workingHours.getClosingHour());
+		DateTime open = start
+				.withHourOfDay(openDt.getHourOfDay())
+				.withMinuteOfHour(openDt.getMinuteOfHour())
+				.withSecondOfMinute(0)
+				.withMillisOfSecond(0);
+		DateTime close = open
+				.withHourOfDay(closeDt.getHourOfDay())
+				.withMinuteOfHour(closeDt.getMinuteOfHour())
+				.withSecondOfMinute(0)
+				.withMillisOfSecond(0);
+		
+		if (!start.isBefore(open) 
+				&& !start.isAfter(close)
+				&& !end.isBefore(start)
+				&& !end.isAfter(close)) {
+			return true;
+		}
 		return false;
 	}
 
@@ -113,7 +170,7 @@ public class BatchProcessor {
 	public Map<String, List<String>> processOutput(SubmissionVO input) {
 		Map<String, List<String>> result = null;
 		if(input != null && input.getRequests() != null && !input.getRequests().isEmpty()) {
-			result = new HashMap<String, List<String>>();
+			result = new LinkedHashMap<String, List<String>>();
 			SimpleDateFormat sdfDay = new SimpleDateFormat("yyyy-MM-dd");
 			SimpleDateFormat sdfHour = new SimpleDateFormat("HH:mm");
 			Calendar date = Calendar.getInstance();

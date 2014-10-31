@@ -68,9 +68,10 @@ public class SubmissionVO {
 	}
 
 	public boolean equals(SubmissionVO o) {
-		if (o.openingHour == this.openingHour
-				&& o.closingHour == this.closingHour
-				&& o.requests == this.requests) {
+		if (o.openingHour.equals(this.openingHour)
+				&& o.closingHour.equals(this.closingHour))
+			if((o.requests != null && o.requests.equals(this.requests))
+				|| (o.requests == null && this.requests == null)) {
 			return true;	
 		}
 		return false;
