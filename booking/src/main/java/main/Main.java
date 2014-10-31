@@ -27,11 +27,17 @@ public class Main {
 	 */
 	public static void main(String args[]) {
 		try {
+			// parsing the file path 
 			String path = args[0].replaceAll("\\\\|/", "\\"+System.getProperty("file.separator"));
+			
+			// reading the content
 			String input = FileUtil.readFile(path);
+			
+			// processing the input file content
 			BatchProcessor batchProcessor = new BatchProcessor();
 			String content = batchProcessor.processMeetingRequests(input);
-		
+			
+			// generating the output file		
 			String filePath;
 			if (args.length > 1 && args[1] != null) {
 				filePath = args[1];
